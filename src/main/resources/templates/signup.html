@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>About Page...</title>
+</head>
+
+<body>
+
+	<!-- Note:-> ~{base::layout(~{::section})}== modern use it in the place of (th:replace="base::layout(~{::section})")-->
+
+	<!--Not:- 1.Every row will take 12 grids in bootstrap
+	
+	2.class="col-md-8"==it will take 8-grids from right side upto or above mediam 
+	                screens(screens have more types like in mobile, in desktop and etc..)
+	
+	3.class="offset-md-2"==for shifting from left side in mediam and above screens.
+	
+	4.<textarea rows="6"> ==  column automatic created so no need to define it. 
+		
+	5.th:value="${user.name}"== for showing previous to user data that has sent by user
+	   	
+	6.th:object="${user}"==to get the object of user from controller.. 
+	
+	
+	7.th:if="${session.message}"==for showing error if session have a message.
+	
+	8.th:classappend="${session.message.type}"===add class as type in alert like('alert-danger','alert-success')
+	
+	
+	9.th:text="${session.message.content}"==print content of message
+	
+	
+	10.<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>=====
+	   for removing message afetr running once. 
+	
+	
+	Note:- in <textarea> we will use th:text="${user.about}" in the place of th:value="${user.about}"
+	  so that text will be return back if any error.
+	-->
+
+	<section>
+
+		<div class="container">
+
+			<div class="row"><!--Not:- Every row will take 12 grids in bootstrap-->
+
+				<div class="col-md-6 offset-md-3">
+
+
+					<div class="my-card mt-1"> <!--making card inside and inside making a form-->
+
+
+
+						<!--   Start alerts when error -->
+
+						<div th:if="${session.message}" th:classappend="${session.message.type}"
+							class="alert alert-primary" role="alert">
+
+							<p th:text="${session.message.content}"></p>
+
+							<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+							<!--for removing that final result mesage this is showin after save user's data-->
+
+							<!--  sessionHelper== var of SessionHelper class used in camel case       -->
+
+						</div>
+						<!--   end alerts -->
+
+
+
+						<div class="container text-center">
+							<img class="mx-auto" style="width: 80px;" th:src="@{/image/register.png}">
+						</div>
+
+						<h1 class="text-center">Registration Here !!</h1>
+
+						<form novalidate th:action="@{/do_register}" method="post" th:object="${user}">
+
+							<!-- name field-->
+							<div class="form-group">
+								<label for="nm">Your Name</label>
+								<input type="text" class="form-control" id="nm" aria-describedby="emailHelp"
+									th:classappend="${#fields.hasErrors('name')? 'is-invalid':''}"
+									placeholder="Enter here" required th:value="${user.name}" name="name">
+
+								<div th:each="e:${#fields.errors('name')}" th:text="${e}" class="invalid-feedback">
+								</div>
+
+
+							</div>
+
+
+							<!-- email field-->
+							<div class="form-group">
+								<label for="em">Your Email</label>
+								<input type="email" class="form-control" id="em" aria-describedby="emailHelp"
+									th:classappend="${#fields.hasErrors('email')? 'is-invalid':''}"
+									placeholder="Enter here" required th:value="${user.email}" name="email">
+
+								<div th:each="e:${#fields.errors('email')}" th:text="${e}" class="invalid-feedback">
+								</div>
+
+							</div>
+
+
+
+							<!-- password field-->
+							<div class="form-group">
+								<label for="pass">Your Password</label>
+								<input type="password" class="form-control" id="pass" aria-describedby="emailHelp"
+									placeholder="Enter here" required name="password">
+							</div>
+
+
+
+							<!-- user about field-->
+							<div class="form-group">
+
+								<textarea th:text="${user.about}" class="form-control" required
+									placeholder="Enter something your self" rows="6"
+									th:classappend="${#fields.hasErrors('about')? 'is-invalid':''}" name="about">
+
+								</textarea>
+
+								<div th:each="e:${#fields.errors('about')}" th:text="${e}" class="invalid-feedback">
+								</div>
+
+
+							</div>
+
+
+
+							<!-- validation field as a check box(terms and condition..)-->
+							<div class="form-group form-check text-center">
+
+								<input type="checkbox" 
+								th:classappend="${#fields.hasErrors('agreement')? 'is-invalid':''}"
+								name="agreement" 
+								class="form-check-input" 
+								id="agreement">
+								<label for="agreement">Accept terms and conditions</label>
+                                 
+                                 <div th:each="e:${#fields.errors('agreement')}" th:text="${e}" class="invalid-feedback">
+								</div>
+
+							</div>
+
+
+							<!--Making two buttons one for submit and second for reset-->
+
+							<div class="container text-center">
+
+								<button type="submit" class="btn bg-primary text-white">Submit</button>
+
+								<button type="reset" class="btn btn-warning text-white">Reset</button>
+
+							</div>
+
+
+						</form>
+
+
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+	</section>
+
+
+
+</body>
+
+</html>
